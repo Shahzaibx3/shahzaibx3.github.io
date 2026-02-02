@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Be My Valentine ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      background-image: url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExancxM3AzdTkwamo5dzJ1ZjEwbmNkZnY1dTIzMW5ydXkzOXRwbnN3cCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/HSCZMUa1ao17h7l5mg/giphy.gif');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      font-family: 'Calibri', cursive, sans-serif;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 182, 193, 0.35);
+      z-index: -1;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 40px 60px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 30px 50px rgba(0,0,0,0.2);
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .buttons {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      width: 100%;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+    }
+
+    #yes {
+      background-color: #38b000;
+      color: white;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #yes:hover {
+      transform: scale(1.08);
+      box-shadow: 0 12px 25px rgba(56, 176, 0, 0.6);
+    }
+
+    #no {
+      background-color: #e63946;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Will you be my Valentine? 💖</h1>
+    <div class="buttons">
+      <button id="yes" onclick="sayYes()">YES 💘</button>
+      <button id="no">No 💔</button>
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById('no');
+
+    document.addEventListener('mousemove', (e) => {
+      const rect = noBtn.getBoundingClientRect();
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+
+      // check if mouse is inside the actual button rectangle
+      if(mouseX >= rect.left && mouseX <= rect.right && mouseY >= rect.top && mouseY <= rect.bottom){
+        noBtn.textContent = 'YES 💘';
+        noBtn.style.backgroundColor = '#38b000';
+      } else {
+        noBtn.textContent = 'No 💔';
+        noBtn.style.backgroundColor = '#e63946';
+      }
+
+      // running away logic
+      const btnX = rect.left + rect.width / 2;
+      const btnY = rect.top + rect.height / 2;
+      const dist = Math.hypot(mouseX - btnX, mouseY - btnY);
+
+      if(dist < 150){
+        const offsetX = (btnX - mouseX) / dist * 150;
+        const offsetY = (btnY - mouseY) / dist * 150;
+        let newX = rect.left + offsetX;
+        let newY = rect.top + offsetY;
+
+        // keep inside viewport
+        newX = Math.max(0, Math.min(window.innerWidth - rect.width, newX));
+        newY = Math.max(0, Math.min(window.innerHeight - rect.height, newY));
+
+        noBtn.style.transform = `translate(${newX - rect.left}px, ${newY - rect.top}px)`;
+      } else {
+        noBtn.style.transform = `translate(0px, 0px)`;
+      }
+    });
+
+    function sayYes() {
+      document.body.innerHTML = `
+        <div class=\"card\" style=\"max-width:420px;\">
+          <h1 style=\"color:#e63946; margin-bottom:16px;\">YAY!!! ❤️🥰</h1>
+          <img src=\"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzdjZmk3ZjFwd3h1emkxdmwzeGMxeXo0Nzc0bnp2cGNsbHJ0dzNvNSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/IzXiddo2twMmdmU8Lv/giphy.gif\" alt=\"Happy GIF\" style=\"width:100%; border-radius:16px; margin:10px 0 20px;\" />
+          <p style=\"font-size:22px;\">Best decision ever </p>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
